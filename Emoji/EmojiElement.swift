@@ -19,6 +19,7 @@ class EmojiElement : UIView {
         self.label.text = emojiName
         self.label.textAlignment = NSTextAlignment.Center
         super.init(frame: frame)
+        self.layer.cornerRadius = 0.1 * self.frame.width
         self.addSubview(label)
     }
     
