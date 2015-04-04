@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A19A7B1D1ACF98DF0031B5B7 /* CombinationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */; };
 		A1E5E3441ACF1CD900631EAD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3431ACF1CD900631EAD /* AppDelegate.swift */; };
 		A1E5E3461ACF1CD900631EAD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3451ACF1CD900631EAD /* ViewController.swift */; };
 		A1E5E3491ACF1CD900631EAD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1E5E3471ACF1CD900631EAD /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinationModel.swift; sourceTree = "<group>"; };
 		A1E5E33E1ACF1CD900631EAD /* Emoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1E5E3421ACF1CD900631EAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1E5E3431ACF1CD900631EAD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				A1E5E36D1ACF4AFE00631EAD /* CauldronView.swift */,
 				A1E5E3431ACF1CD900631EAD /* AppDelegate.swift */,
 				A1E5E3451ACF1CD900631EAD /* ViewController.swift */,
+				A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */,
 				A1E5E3471ACF1CD900631EAD /* Main.storyboard */,
 				A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */,
 				A1E5E34A1ACF1CD900631EAD /* Images.xcassets */,
@@ -226,6 +229,7 @@
 				A1E5E3641ACF1CF200631EAD /* EmojiElement.swift in Sources */,
 				A1E5E36C1ACF485A00631EAD /* PrimitiveContainerView.swift in Sources */,
 				A1E5E3441ACF1CD900631EAD /* AppDelegate.swift in Sources */,
+				A19A7B1D1ACF98DF0031B5B7 /* CombinationModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +421,7 @@
 				A1E5E35F1ACF1CD900631EAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A1E5E3601ACF1CD900631EAD /* Build configuration list for PBXNativeTarget "EmojiTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +430,7 @@
 				A1E5E3621ACF1CD900631EAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
