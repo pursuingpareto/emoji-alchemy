@@ -150,8 +150,8 @@ class CombinationModel {
             var e1 = combo.0
             var e2 = combo.1
             var res = combo.2
-            var key1 = e1 + e2
-            var key2 = e2 + e1
+            var key1 = (e1 as String) + (e2 as String)
+            var key2 = (e2 as String) + (e1 as String)
             cDict[key1] = res
             cDict[key2] = res
         }

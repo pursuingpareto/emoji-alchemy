@@ -13,7 +13,7 @@ class CauldronView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(red: 0.3, green: 0.1, blue: 0.1, alpha: 0.3)
+        self.backgroundColor = UIColor(red: 0.1, green: 0.4, blue: 0.1, alpha: 0.3)
     }
     
     required init(coder aDecoder: NSCoder) {
