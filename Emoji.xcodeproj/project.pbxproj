@@ -16,7 +16,6 @@
 		A1E5E35A1ACF1CD900631EAD /* EmojiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3591ACF1CD900631EAD /* EmojiTests.swift */; };
 		A1E5E3641ACF1CF200631EAD /* EmojiElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */; };
 		A1E5E36C1ACF485A00631EAD /* PrimitiveContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E36B1ACF485A00631EAD /* PrimitiveContainerView.swift */; };
-		A1E5E36E1ACF4AFE00631EAD /* CauldronView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E36D1ACF4AFE00631EAD /* CauldronView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +42,6 @@
 		A1E5E3591ACF1CD900631EAD /* EmojiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTests.swift; sourceTree = "<group>"; };
 		A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiElement.swift; sourceTree = "<group>"; };
 		A1E5E36B1ACF485A00631EAD /* PrimitiveContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimitiveContainerView.swift; sourceTree = "<group>"; };
-		A1E5E36D1ACF4AFE00631EAD /* CauldronView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CauldronView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				A1E5E36B1ACF485A00631EAD /* PrimitiveContainerView.swift */,
-				A1E5E36D1ACF4AFE00631EAD /* CauldronView.swift */,
 				A1E5E3431ACF1CD900631EAD /* AppDelegate.swift */,
 				A1E5E3451ACF1CD900631EAD /* ViewController.swift */,
 				A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */,
@@ -224,7 +221,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1E5E36E1ACF4AFE00631EAD /* CauldronView.swift in Sources */,
 				A1E5E3461ACF1CD900631EAD /* ViewController.swift in Sources */,
 				A1E5E3641ACF1CF200631EAD /* EmojiElement.swift in Sources */,
 				A1E5E36C1ACF485A00631EAD /* PrimitiveContainerView.swift in Sources */,

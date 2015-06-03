@@ -16,16 +16,13 @@ class ViewController: UIViewController {
     var emojiSize = CGSize()
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var primitiveContainerView : PrimitiveContainerView = PrimitiveContainerView(frame: CGRectZero)
-    var cauldronView : CauldronView = CauldronView(frame:CGRectZero)
     let comboModel = CombinationModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         emojiSize = getEmojiSize()
         addPrimitivesToView()
-        addCauldronToView()
-        
-        // Do any additional setup after loading the view, typically from a nib.
+
     }
     
     func addPrimitiveContainer(location: CGPoint, size: CGSize) {
@@ -35,15 +32,6 @@ class ViewController: UIViewController {
         self.view.addSubview(primitiveContainer)
     }
     
-    func addCauldronToView() {
-        let diameter = screen.width / 2.0
-        let x = screen.width/2 - diameter/2
-        let y = 3*screen.height/5 - emojiSize.height/2 - diameter/2
-        let frame = CGRectMake(x, y, diameter, diameter)
-        cauldronView = CauldronView(frame: frame)
-        cauldronView.layer.cornerRadius = diameter / 5
-        self.view.addSubview(cauldronView)
-    }
     
     func getEmojiSize() -> CGSize {
         let screenWidth = screen.width
@@ -86,8 +74,8 @@ class ViewController: UIViewController {
         let panRec = UIPanGestureRecognizer()
         panRec.addTarget(self, action: "draggedEmoji:")
         elementView.addGestureRecognizer(panRec)
-        cauldronView.addSubview(elementView)
-        elementView.center = cauldronView.center
+        self.view.addSubview(elementView)
+        elementView.center = self.view.center
     }
     
     func convertCoords(previousView: UIView, nextView: UIView, point: CGPoint) -> CGPoint {
@@ -119,7 +107,7 @@ class ViewController: UIViewController {
         UIView.animateWithDuration(1.0, delay: 0, options: .CurveEaseInOut, animations: {
             combinationLabel.alpha = 1.0
             e.transform = CGAffineTransformMakeScale(1.3, 1.3)
-            e.center = CGPointMake(e.center.x, e.center.y-self.cauldronView.frame.height)
+            e.center = CGPointMake(e.center.x, e.center.y-self.view.frame.height)
             }, completion : {finished in
                 
                 
@@ -142,15 +130,15 @@ class ViewController: UIViewController {
         combinationLabel.textAlignment = NSTextAlignment.Center
         combinationLabel.frame = CGRectMake(0, 20, screen.width, emojiSize.height)
         
-        let center = convertCoords(self.view, nextView: cauldronView, point: cauldronView.center)
+        let center = convertCoords(self.view, nextView: self.view, point: self.view.center)
         UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseIn, animations: {
             e1.center = center
             e2.center = center
             }, completion : { finished in
                 e1.removeFromSuperview()
                 e2.removeFromSuperview()
-                let x = self.cauldronView.frame.origin.x + self.cauldronView.frame.width/2
-                let y = self.cauldronView.frame.origin.y + self.cauldronView.frame.height/2
+                let x = self.view.frame.origin.x + self.view.frame.width/2
+                let y = self.view.frame.origin.y + self.view.frame.height/2
                 let loc = CGPointMake(x, y)
                 let eNew = self.addEmojiCentered(res, location: loc)
                 self.animateNewEmoji(eNew, combinationLabel: combinationLabel)
@@ -166,7 +154,7 @@ class ViewController: UIViewController {
         println("EXPELLING EMOJI")
         UIView.animateWithDuration(0.6, delay: 0, options: .CurveEaseIn, animations: {
             var tx = CGFloat(arc4random_uniform(UInt32(self.emojiSize.width)))
-            var ty = self.cauldronView.frame.height + CGFloat(arc4random_uniform(UInt32(self.emojiSize.height)))
+            var ty = self.view.frame.height + CGFloat(arc4random_uniform(UInt32(self.emojiSize.height)))
             println("Translating tx: \(tx) ty: \(ty)")
             emoji.center = CGPointMake(emoji.center.x - tx, emoji.center.y - ty)
             
@@ -196,12 +184,12 @@ class ViewController: UIViewController {
                     println("Grabbed emoji from primitives")
                     let copyLocation = CGPoint(x: selected.frame.origin.x, y:selected.frame.origin.y)
                     addEmojiElement(selected.emojiName, location: copyLocation)
-                } else if contains(cauldronView.subviews as! [UIView], selected) {
+                } else if contains(self.view.subviews as! [UIView], selected) {
                     
                     println("Grabbed emoji from cauldron")
                     // TODO : remove from cauldron view
                     self.view.addSubview(selected)
-                    selected.frame.origin = convertCoords(cauldronView, nextView: self.view, point: selected.frame.origin)
+                    selected.frame.origin = convertCoords(self.view, nextView: self.view, point: selected.frame.origin)
                 } else {
                     println("Grabbed emoji from canvas")
                     // TODO :  Save start location
@@ -230,11 +218,11 @@ class ViewController: UIViewController {
                             println("grew") })
 //                    selected.frame.origin.y = -self.emojiSize.height * (1 + self.emojiPaddingFactor)
                     
-                } else if CGRectContainsPoint(cauldronView.frame, selected.center) {
-                    cauldronView.addSubview(selected)
-                    selected.frame.origin = convertCoords(self.view, nextView: cauldronView, point: selected.frame.origin)
-                    if self.cauldronView.subviews.count == 2 {
-                        let svs = self.cauldronView.subviews as! [EmojiElement]
+                } else if CGRectContainsPoint(self.view.frame, selected.center) {
+                    self.view.addSubview(selected)
+                    selected.frame.origin = convertCoords(self.view, nextView: self.view, point: selected.frame.origin)
+                    if self.view.subviews.count == 2 {
+                        let svs = self.view.subviews as! [EmojiElement]
                         var e1 = svs[0]
                         var e2 = svs[1]
                         if let res = self.combineEmojis(e1, e2: e2)  {
