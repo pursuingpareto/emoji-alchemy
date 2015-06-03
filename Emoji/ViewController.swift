@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var primitiveContainerView : PrimitiveContainerView = PrimitiveContainerView(frame: CGRectZero)
     let comboModel = CombinationModel()
-    
+    var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
     override func viewDidLoad() {
         super.viewDidLoad()
         emojiSize = getEmojiSize()
@@ -32,6 +32,19 @@ class ViewController: UIViewController {
         self.view.addSubview(primitiveContainer)
     }
     
+    func addPrimitivesToView(){
+        let y_location = screen.height - emojiSize.height - (emojiPaddingFactor * 2 * emojiSize.height)
+        let container_y_location = y_location - emojiPaddingFactor * 2*emojiSize.height
+        let container_location = CGPoint(x: 0, y: container_y_location)
+        let container_size = CGSizeMake(screen.width, screen.height-container_y_location)
+        addPrimitiveContainer(container_location, size: container_size)
+        for (i, e) in enumerate(primitiveEmojiNames) {
+            var x_location = emojiPaddingFactor * emojiSize.width + CGFloat(i) * emojiSize.width * (1.0 + emojiPaddingFactor)
+            let newEmoji = createEmojiElement(e)
+            newEmoji.frame.origin = CGPointMake(x_location, y_location)
+            self.view.addSubview(newEmoji)
+        }
+    }
     
     func getEmojiSize() -> CGSize {
         let screenWidth = screen.width
@@ -43,59 +56,18 @@ class ViewController: UIViewController {
         return emojiSize
     }
     
-    func addEmojiCentered(emojiName: NSString, location: CGPoint)->EmojiElement {
-        let origin = CGPointMake(location.x - emojiSize.width/2, location.y - emojiSize.height / 2)
-        return addEmojiElement(emojiName, location: origin)
-    }
-    
-    func addEmojiElement(emojiName: NSString, location: CGPoint) ->EmojiElement {
+    func createEmojiElement(emojiName: NSString) -> EmojiElement {
         var textName : NSString? = comboModel.emojiToText[emojiName]
         if textName == nil {
             textName = " "
         }
-        let frame : CGRect = CGRectMake(location.x, location.y, emojiSize.width, emojiSize.height)
+        let frame : CGRect = CGRectMake(0, 0, emojiSize.width, emojiSize.height)
         var elementView = EmojiElement(frame: frame, emojiName : emojiName, textName : textName!)
         elementView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         let panRec = UIPanGestureRecognizer()
         panRec.addTarget(self, action: "draggedEmoji:")
         elementView.addGestureRecognizer(panRec)
-        self.view.addSubview(elementView)
         return elementView
-    }
-//    TODO : REFACTOR THIS SHIT
-    func addEmojiElementToCauldron(emojiName: NSString, location: CGPoint) {
-        var textName : NSString? = comboModel.emojiToText[emojiName]
-        if textName == nil {
-            textName = " "
-        }
-        let frame : CGRect = CGRectMake(location.x, location.y, emojiSize.width, emojiSize.height)
-        var elementView = EmojiElement(frame: frame, emojiName : emojiName, textName : textName!)
-        elementView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let panRec = UIPanGestureRecognizer()
-        panRec.addTarget(self, action: "draggedEmoji:")
-        elementView.addGestureRecognizer(panRec)
-        self.view.addSubview(elementView)
-        elementView.center = self.view.center
-    }
-    
-    func convertCoords(previousView: UIView, nextView: UIView, point: CGPoint) -> CGPoint {
-        println("PREV ORIGIN: \(previousView.frame.origin.x), \(previousView.frame.origin.y)")
-        println("NEXT ORIGIN: \(nextView.frame.origin.x), \(nextView.frame.origin.y)")
-        let delta = CGVector(dx: previousView.frame.origin.x - nextView.frame.origin.x, dy: previousView.frame.origin.y - nextView.frame.origin.y)
-        let newPoint = CGPoint(x: point.x + delta.dx, y: point.y + delta.dy)
-        return newPoint
-    }
-    
-    func addPrimitivesToView(){
-        let y_location = screen.height - emojiSize.height - (emojiPaddingFactor * 2 * emojiSize.height)
-        let container_y_location = y_location - emojiPaddingFactor * 2*emojiSize.height
-        let container_location = CGPoint(x: 0, y: container_y_location)
-        let container_size = CGSizeMake(screen.width, screen.height-container_y_location)
-        addPrimitiveContainer(container_location, size: container_size)
-        for (i, e) in enumerate(primitiveEmojiNames) {
-            var x_location = emojiPaddingFactor * emojiSize.width + CGFloat(i) * emojiSize.width * (1.0 + emojiPaddingFactor)
-            addEmojiElement(e, location: CGPoint(x: x_location, y: y_location))
-        }
     }
     
     func animateNewEmoji(e: EmojiElement, combinationLabel : UILabel) {
@@ -123,56 +95,30 @@ class ViewController: UIViewController {
         })
     }
     
-    func animateCombination(e1 : EmojiElement, e2 : EmojiElement, res : NSString) {
+    func animateCombination(e1 : EmojiElement, e2 : EmojiElement, res : EmojiElement) {
         
         var combinationLabel = UILabel()
-        combinationLabel.text = (e1.emojiName as String) + " + " + (e2.emojiName as String) + " = " + (res as String)
+        combinationLabel.text = (e1.emojiName as String) + " + " + (e2.emojiName as String) + " = " + (res.emojiName as String)
         combinationLabel.textAlignment = NSTextAlignment.Center
         combinationLabel.frame = CGRectMake(0, 20, screen.width, emojiSize.height)
-        
-        let center = convertCoords(self.view, nextView: self.view, point: self.view.center)
+        let cx = (e1.center.x + e2.center.x) / 2
+        let cy = (e1.center.y + e2.center.y) / 2
+        let center = CGPointMake(cx, cy)
         UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseIn, animations: {
             e1.center = center
             e2.center = center
+            res.center = center
+            self.view.addSubview(combinationLabel)
             }, completion : { finished in
                 e1.removeFromSuperview()
                 e2.removeFromSuperview()
-                let x = self.view.frame.origin.x + self.view.frame.width/2
-                let y = self.view.frame.origin.y + self.view.frame.height/2
-                let loc = CGPointMake(x, y)
-                let eNew = self.addEmojiCentered(res, location: loc)
-                self.animateNewEmoji(eNew, combinationLabel: combinationLabel)
-                
+                self.view.addSubview(res)
+                combinationLabel.removeFromSuperview()
         })
     }
     
     func randomCGFloat() -> CGFloat {
         return CGFloat(Float(arc4random()) / Float(UINT32_MAX))
-    }
-    
-    func expelEmoji(emoji : EmojiElement) {
-        println("EXPELLING EMOJI")
-        UIView.animateWithDuration(0.6, delay: 0, options: .CurveEaseIn, animations: {
-            var tx = CGFloat(arc4random_uniform(UInt32(self.emojiSize.width)))
-            var ty = self.view.frame.height + CGFloat(arc4random_uniform(UInt32(self.emojiSize.height)))
-            println("Translating tx: \(tx) ty: \(ty)")
-            emoji.center = CGPointMake(emoji.center.x - tx, emoji.center.y - ty)
-            
-            }, completion : { finished in
-                var oldView = emoji.superview!
-                emoji.removeFromSuperview()
-                
-                self.view.addSubview(emoji)
-                println("oldView was \(oldView)")
-                println("emoji center is at x: \(emoji.center.x) y: \(emoji.center.y)")
-
-                emoji.center = self.convertCoords(oldView, nextView: self.view, point: emoji.center)
-                
-                println("after center is at x: \(emoji.center.x) y: \(emoji.center.y)")
-                emoji.frame.origin = emoji.layer.frame.origin
-            })
-    
-        
     }
 
     func draggedEmoji(sender: UIPanGestureRecognizer) {
@@ -181,18 +127,10 @@ class ViewController: UIViewController {
             switch sender.state {
             case .Began:
                 if CGRectContainsPoint(primitiveContainerView.frame, selected.center) {
-                    println("Grabbed emoji from primitives")
+                    let copyEmoji = createEmojiElement(selected.emojiName)
                     let copyLocation = CGPoint(x: selected.frame.origin.x, y:selected.frame.origin.y)
-                    addEmojiElement(selected.emojiName, location: copyLocation)
-                } else if contains(self.view.subviews as! [UIView], selected) {
-                    
-                    println("Grabbed emoji from cauldron")
-                    // TODO : remove from cauldron view
-                    self.view.addSubview(selected)
-                    selected.frame.origin = convertCoords(self.view, nextView: self.view, point: selected.frame.origin)
-                } else {
-                    println("Grabbed emoji from canvas")
-                    // TODO :  Save start location
+                    copyEmoji.frame.origin = copyLocation
+                    self.view.addSubview(copyEmoji)
                 }
                 println("began")
                 UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseOut, animations: {
@@ -208,8 +146,9 @@ class ViewController: UIViewController {
                 sender.setTranslation(CGPointZero, inView: self.view)
             
             case .Ended:
+                println(self.view.subviews.count)
                 if CGRectContainsPoint(primitiveContainerView.frame, selected.center) {
-                    println("Attempting to drop in primitives")
+//                    println("Attempting to drop in primitives")
                     UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseInOut, animations: {
                         let dy = -self.emojiSize.height * (1 + 4*self.emojiPaddingFactor)
 //                        selected.transform = CGAffineTransformMakeTranslation(0, dy )
@@ -218,33 +157,61 @@ class ViewController: UIViewController {
                             println("grew") })
 //                    selected.frame.origin.y = -self.emojiSize.height * (1 + self.emojiPaddingFactor)
                     
-                } else if CGRectContainsPoint(self.view.frame, selected.center) {
-                    self.view.addSubview(selected)
-                    selected.frame.origin = convertCoords(self.view, nextView: self.view, point: selected.frame.origin)
-                    if self.view.subviews.count == 2 {
-                        let svs = self.view.subviews as! [EmojiElement]
-                        var e1 = svs[0]
-                        var e2 = svs[1]
-                        if let res = self.combineEmojis(e1, e2: e2)  {
-                            animateCombination(e1, e2: e2, res: res)
-                        } else {
-                            expelEmoji(selected)
+                } else if !CGRectContainsPoint(self.view.frame, selected.center) {
+                    println("Attempting to drag off screen")
+                    selected.removeFromSuperview()
+                } else {
+//                    emoji dragged onto canvas
+                    var combined = false
+                    for activeEmoji in activeEmojis.keys {
+                        if CGRectContainsPoint(activeEmoji.frame, selected.center) {
+                            var eNew : EmojiElement?
+                            if let res = combineEmojis(selected, e2: activeEmoji)  {
+                                activeEmojis.removeValueForKey(activeEmoji)
+//                                eNew = createEmojiElement(<#emojiName: NSString#>)
+//                                eNew = animateCombination(selected, e2: activeEmoji, res: res)
+                                animateCombination(selected, e2: activeEmoji, res: res)
+
+                                activeEmojis[res] = [activeEmoji.emojiName, selected.emojiName]
+                                combined = true
+                                break
+                            }
                         }
-                    
+                    }
+                    if !combined {
+                        activeEmojis[selected] = [NSString()]
+                    }
+                    if let emojiBelow : UIView? = self.view.hitTest(selected.center, withEvent: nil) {
+                        println(emojiBelow)
+                        
+                        if emojiBelow == selected {
+                            self.view.addSubview(selected)
+                        } else if emojiBelow is EmojiElement {
+                            let e2 = emojiBelow as! EmojiElement
+                                                    }
+                        
                     } else {
+                        
+                    }
+                    
+                    
+//                    if self.view.subviews.count == 2 {
+//                        let svs = self.view.subviews as! [EmojiElement]
+//                        var e1 = svs[0]
+//                        var e2 = svs[1]
+//                        if let res = self.combineEmojis(e1, e2: e2)  {
+//                            animateCombination(e1, e2: e2, res: res)
+//                        } else {
+//                            expelEmoji(selected)
+//                        }
+//                    
+//                    } else {
                         UIView.animateWithDuration(0.5, delay : 0.0, options : .CurveEaseOut, animations: {
                             selected.transform = CGAffineTransformMakeScale(1.0/1.3, 1.0/1.3)
                             }, completion: { finished in
                                 })
                         println("Dropping in Cauldron")
                         // TODO : add cauldron logic
-                        }
-
-                } else if !CGRectContainsPoint(self.view.frame, selected.center) {
-                    println("Attempting to drag off screen")
-                    selected.removeFromSuperview()
-                } else {
-                    println("droping on canvas")
                 }
                 
             case .Possible:
@@ -261,13 +228,13 @@ class ViewController: UIViewController {
         }
     }
     
-    func combineEmojis(e1: EmojiElement, e2: EmojiElement) -> NSString? {
+    func combineEmojis(e1: EmojiElement, e2: EmojiElement) -> EmojiElement? {
         println("attempting to combine")
         let k = (e1.emojiName as String) + (e2.emojiName as String)
 
         if let newName = comboModel.comboDict[k] {
             println(comboModel.emojiToText[newName]!)
-            return newName
+            return createEmojiElement(newName)
         }
         return nil
     }
