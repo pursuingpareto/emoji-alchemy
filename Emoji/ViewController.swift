@@ -100,7 +100,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func animateCombination(e1 : EmojiElement, e2 : EmojiElement, res : EmojiElement) {
-        
         var combinationLabel = UILabel()
         combinationLabel.text = (e1.emojiName as String) + " + " + (e2.emojiName as String) + " = " + (res.emojiName as String)
         combinationLabel.textAlignment = NSTextAlignment.Center
@@ -118,6 +117,18 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                 e2.removeFromSuperview()
                 self.view.addSubview(res)
                 combinationLabel.removeFromSuperview()
+        })
+    }
+    
+    func animateRejection(e1: EmojiElement, e2: EmojiElement) {
+        let changeInX = CGFloat(randRange(-30, 30)) //TODO use % instead of absolute values (30)? 
+        let changeInY = CGFloat(randRange(-30, 30))
+        let newE1Center = CGPointMake(e1.center.x + changeInX, e1.center.y + changeInY)
+        let newE2Center = CGPointMake(e1.center.x - changeInX, e1.center.y - changeInY)
+
+        UIView.animateWithDuration(0.3, animations: {
+            e1.center = newE1Center
+            e2.center = newE2Center
         })
     }
     
@@ -150,7 +161,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                 sender.setTranslation(CGPointZero, inView: self.view)
             
             case .Ended:
-
+                // if the emoji ends up in the bottom bar move it above the bar
                 if CGRectContainsPoint(primitiveContainerView.frame, selected.center) {
 
                     UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseInOut, animations: {
@@ -160,17 +171,20 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                         }, completion: { finished in
                             println("grew") })
 
-                    
-                } else if !CGRectContainsPoint(self.view.frame, selected.center) {
+                // remove emojis dragged off the screen
+                }
+                else if !CGRectContainsPoint(self.view.frame, selected.center) {
                     println("Attempting to drag off screen")
                     activeEmojis.removeValueForKey(selected)
                     selected.removeFromSuperview()
-                    
-                } else {
-//                    emoji dragged onto canvas
+                }
+                //    emoji dragged onto canvas
+                else {
                     var combined = false
-                    for activeEmoji in activeEmojis.keys {
+                    let otherEmoji = activeEmojis.keys.array.filter({$0 != selected})
+                    for activeEmoji in otherEmoji {
                         if CGRectContainsPoint(activeEmoji.frame, selected.center) {
+                            // if the emoji match create the combination
                             if let res = combineEmojis(selected, e2: activeEmoji)  {
                                 activeEmojis[res] = [activeEmoji.emojiName, selected.emojiName]
                                 activeEmojis.removeValueForKey(activeEmoji)
@@ -181,6 +195,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                                 combined = true
                                 break
                             }
+                            // if the emoji don't match display to the user
+                            else {
+                                println("Emoji didn't match")
+                                animateRejection(activeEmoji, e2: selected)
+                            }
                         }
                     }
                     if !combined {
@@ -189,23 +208,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                         }
                         
                     }
-                    if let emojiBelow : UIView? = self.view.hitTest(selected.center, withEvent: nil) {
-                        
-                        if emojiBelow == selected {
-                            self.view.addSubview(selected)
-                        } else if emojiBelow is EmojiElement {
-                            let e2 = emojiBelow as! EmojiElement
-                        }
-                    } else {
-                        
-                    }
-
-                        UIView.animateWithDuration(0.5, delay : 0.0, options : .CurveEaseOut, animations: {
-//                            selected.transform = CGAffineTransformMakeScale(1.0/1.3, 1.0/1.3)
-                            }, completion: { finished in
-                                })
-                        println("Dropping in Cauldron")
-                        // TODO : add cauldron logic
                 }
                 
             case .Possible:
