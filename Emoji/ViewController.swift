@@ -16,13 +16,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var emojiSize = CGSize()
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var primitiveContainerView : PrimitiveContainerView = PrimitiveContainerView(frame: CGRectZero)
+    var counterView = UILabel()
     let comboModel = CombinationModel()
+    var emojisDiscovered = Set<NSString>()
     let growFactor = 2.0
     var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
     override func viewDidLoad() {
         super.viewDidLoad()
         emojiSize = getEmojiSize()
         addPrimitivesToView()
+        counterView = addCounterToView()
 
     }
     
@@ -45,6 +48,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             newEmoji.frame.origin = CGPointMake(x_location, y_location)
             self.view.addSubview(newEmoji)
         }
+    }
+    
+    func addCounterToView() -> UILabel {
+        var counter = UILabel()
+        counter.text = "0 / 100"
+        counter.frame = CGRectMake(10, 30, 100, 20)
+        self.view.addSubview(counter)
+        return counter
     }
     
     func getEmojiSize() -> CGSize {
@@ -72,31 +83,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         elementView.addGestureRecognizer(panRec)
         elementView.addGestureRecognizer(pinchRec)
         return elementView
-    }
-    
-    func animateNewEmoji(e: EmojiElement, combinationLabel : UILabel) {
-        
-        combinationLabel.font = UIFont(name: combinationLabel.font.fontName, size: 30)
-        combinationLabel.backgroundColor = UIColor(white: 1, alpha: 0.5)
-        combinationLabel.alpha = 0
-        self.view.addSubview(combinationLabel)
-        UIView.animateWithDuration(1.0, delay: 0, options: .CurveEaseInOut, animations: {
-            combinationLabel.alpha = 1.0
-//            e.transform = CGAffineTransformMakeScale(1.3, 1.3)
-            e.center = CGPointMake(e.center.x, e.center.y-self.view.frame.height)
-            }, completion : {finished in
-                
-                
-        })
-        UIView.animateWithDuration(2.5, delay: 2.0, options: .CurveEaseInOut, animations: {
-            combinationLabel.alpha = 1
-            }, completion: {finished in
-                
-        })
-        UIView.animateWithDuration(1.0, delay: 3.5, options: .CurveEaseIn, animations: {
-            combinationLabel.alpha = 0
-            }, completion: {finished in
-        })
     }
     
     func animateCombination(e1 : EmojiElement, e2 : EmojiElement, res : EmojiElement) {
@@ -153,29 +139,28 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                     self.view.addSubview(copyEmoji)
                     UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseOut, animations: {
                         selected.transform = CGAffineTransformMakeScale(2.0, 2.0)
-                        
                         }, completion: { finished in
                             println("grew") })
                 }
-
-                
             case .Changed:
                 self.view.bringSubviewToFront(selected)
                 var translation = sender.translationInView(self.view)
                 selected.center = CGPointMake(selected.center.x + translation.x, selected.center.y + translation.y)
                 sender.setTranslation(CGPointZero, inView: self.view)
-            
             case .Ended:
-                // if the emoji ends up in the bottom bar move it above the bar
+                // Slide the emoji
+                var v = sender.velocityInView(self.view)
+                UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseOut, animations: {
+                    selected.center.x += v.x/10
+                    selected.center.y += v.y/10
+                    }, completion: { finished in
+                        println("Slid") })
                 if CGRectContainsPoint(primitiveContainerView.frame, selected.center) {
-
                     UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseInOut, animations: {
                         let dy = -self.emojiSize.height * (1 + 4*self.emojiPaddingFactor)
-
                         selected.center = CGPointMake(selected.center.x, selected.center.y + dy)
                         }, completion: { finished in
                             println("grew") })
-
                 // remove emojis dragged off the screen
                 }
                 else if !CGRectContainsPoint(self.view.frame, selected.center) {
@@ -195,8 +180,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                                 activeEmojis.removeValueForKey(activeEmoji)
                                 activeEmojis.removeValueForKey(selected)
                                 animateCombination(selected, e2: activeEmoji, res: res)
-                                
-
                                 combined = true
                                 break
                             }
@@ -211,10 +194,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                         if activeEmojis[selected] == nil{
                             self.activeEmojis[selected] = [NSString()]
                         }
-                        
                     }
                 }
-                
             case .Possible:
                 println("possible")
             case .Cancelled:
@@ -269,7 +250,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         if let newName = comboModel.comboDict[k] {
             let newEmoji = createEmojiElement(newName)
             newEmoji.transform = CGAffineTransformMakeScale(2.0, 2.0)
-//            newEmoji.frame.size = e1.frame.size
+            self.emojisDiscovered.insert(newName)
+            var counterString = String(self.emojisDiscovered.count) + " / 100"
+            self.counterView.text = counterString
             return newEmoji
         }
         return nil
@@ -277,13 +260,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer:UIGestureRecognizer) -> Bool {
         return true
     }
-
-
 }
 
