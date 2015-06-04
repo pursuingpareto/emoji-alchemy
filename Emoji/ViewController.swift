@@ -121,10 +121,15 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func animateRejection(e1: EmojiElement, e2: EmojiElement) {
-        let changeInX = CGFloat(randRange(-30, 30)) //TODO use % instead of absolute values (30)? 
-        let changeInY = CGFloat(randRange(-30, 30))
-        let newE1Center = CGPointMake(e1.center.x + changeInX, e1.center.y + changeInY)
-        let newE2Center = CGPointMake(e1.center.x - changeInX, e1.center.y - changeInY)
+        // andy's algorithm
+        let movementMagnitude = e1.frame.width/2
+        let dX = e2.center.x - e1.center.x
+        let dY = e2.center.y - e1.center.y
+        let h = sqrt(pow(dX, 2)+pow(dY, 2))
+        let xAmount = dX/h * movementMagnitude
+        let yAmount = dY/h * movementMagnitude
+        let newE1Center = CGPointMake(e1.center.x - xAmount, e1.center.y - yAmount)
+        let newE2Center = CGPointMake(e2.center.x + xAmount, e2.center.y + yAmount)
 
         UIView.animateWithDuration(0.3, animations: {
             e1.center = newE1Center

@@ -16,6 +16,7 @@
 		A1E5E35A1ACF1CD900631EAD /* EmojiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3591ACF1CD900631EAD /* EmojiTests.swift */; };
 		A1E5E3641ACF1CF200631EAD /* EmojiElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */; };
 		A1E5E36C1ACF485A00631EAD /* PrimitiveContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5E36B1ACF485A00631EAD /* PrimitiveContainerView.swift */; };
+		E8931C031B20E368009C67A6 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8931C021B20E368009C67A6 /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		A1E5E3591ACF1CD900631EAD /* EmojiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTests.swift; sourceTree = "<group>"; };
 		A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiElement.swift; sourceTree = "<group>"; };
 		A1E5E36B1ACF485A00631EAD /* PrimitiveContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimitiveContainerView.swift; sourceTree = "<group>"; };
+		E8931C021B20E368009C67A6 /* Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 				A1E5E3431ACF1CD900631EAD /* AppDelegate.swift */,
 				A1E5E3451ACF1CD900631EAD /* ViewController.swift */,
 				A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */,
+				E8931C021B20E368009C67A6 /* Utility.swift */,
 				A1E5E3471ACF1CD900631EAD /* Main.storyboard */,
 				A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */,
 				A1E5E34A1ACF1CD900631EAD /* Images.xcassets */,
@@ -221,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8931C031B20E368009C67A6 /* Utility.swift in Sources */,
 				A1E5E3461ACF1CD900631EAD /* ViewController.swift in Sources */,
 				A1E5E3641ACF1CF200631EAD /* EmojiElement.swift in Sources */,
 				A1E5E36C1ACF485A00631EAD /* PrimitiveContainerView.swift in Sources */,
