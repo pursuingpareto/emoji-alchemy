@@ -17,7 +17,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var primitiveContainerView : PrimitiveContainerView = PrimitiveContainerView(frame: CGRectZero)
     var counterView = UILabel()
+    var discoveredButton = UIButton()
     let comboModel = CombinationModel()
+    var emojisDiscoveredViewController = EmojisDiscoveredViewController()
+    var discoveredNavigationController = UINavigationController()
     var emojisDiscovered = Set<NSString>()
     let growFactor = 2.0
     var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
@@ -26,7 +29,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         emojiSize = getEmojiSize()
         addPrimitivesToView()
         counterView = addCounterToView()
-
+        discoveredButton = addDiscoveredButtonToView()
     }
     
     func addPrimitiveContainer(location: CGPoint, size: CGSize) {
@@ -57,6 +60,34 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         self.view.addSubview(counter)
         return counter
     }
+    
+    func addDiscoveredButtonToView() -> UIButton {
+        var button = UIButton()
+        button.tintColor = UIColor.grayColor()
+        button.frame = CGRectMake(100, 100, 50, 50)
+        button.backgroundColor = UIColor.grayColor()
+        self.view.addSubview(button)
+        button.addTarget(self, action: "displayVC:", forControlEvents: .TouchUpInside)
+        return button
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let controller = segue.destinationViewController as! EmojisDiscoveredViewController
+        controller.discovered = Array(emojisDiscovered)
+    }
+    
+    func displayVC(sender: UIButton!) {
+        println("ATTEMPTING TO DISPLAY VC")
+//        emojisDiscoveredViewController = storyboard!.instantiateViewControllerWithIdentifier("emojisDiscoveredIdentifier") as! EmojisDiscoveredViewController
+//        emojisDiscoveredViewController.discovered = Array(emojisDiscovered)
+//        self.presentViewController(emojisDiscoveredViewController, animated: true, completion: nil)
+        performSegueWithIdentifier("displayDiscovered", sender: self)
+//        self.presentViewController(discoveredNavigationController, animated: true, completion: nil)
+    }
+    func dismissVC() {
+        emojisDiscoveredViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     
     func getEmojiSize() -> CGSize {
         let screenWidth = screen.width
