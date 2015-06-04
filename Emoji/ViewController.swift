@@ -131,6 +131,13 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                 selected.center = CGPointMake(selected.center.x + translation.x, selected.center.y + translation.y)
                 sender.setTranslation(CGPointZero, inView: self.view)
             case .Ended:
+                // Slide the emoji
+                var v = sender.velocityInView(self.view)
+                UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseOut, animations: {
+                    selected.center.x += v.x/10
+                    selected.center.y += v.y/10
+                    }, completion: { finished in
+                        println("Slid") })
                 if CGRectContainsPoint(primitiveContainerView.frame, selected.center) {
                     UIView.animateWithDuration(0.3, delay : 0.0, options : .CurveEaseInOut, animations: {
                         let dy = -self.emojiSize.height * (1 + 4*self.emojiPaddingFactor)
