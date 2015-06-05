@@ -30,10 +30,11 @@ extension EmojisDiscoveredViewController : UICollectionViewDataSource {
         cell.backgroundColor = UIColor.clearColor()
         //        cell.emojiName.text = discovered[indexPath.row] as String
         let e = discoveredEmojis[indexPath.row] as EmojiElement
+        e.textLabel.font = UIFont(name: e.textLabel.font.fontName, size: 10)
+        e.transform = CGAffineTransformMakeScale(1.2, 1.2)
         cell.addSubview(e)
         return cell
     }
-    
 }
 
 extension EmojisDiscoveredViewController : UICollectionViewDelegateFlowLayout {
