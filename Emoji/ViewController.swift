@@ -16,20 +16,19 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     var emojiSize = CGSize()
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var primitiveContainerView : PrimitiveContainerView = PrimitiveContainerView(frame: CGRectZero)
-    var counterView = UILabel()
+    var counterView = UIBarButtonItem()
     var discoveredButton = UIButton()
     let comboModel = CombinationModel()
     var emojisDiscoveredViewController = EmojisDiscoveredViewController()
     var discoveredNavigationController = UINavigationController()
     var emojisDiscovered = Set<NSString>()
-    let growFactor = 2.0
+    
     var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
     override func viewDidLoad() {
         super.viewDidLoad()
         emojiSize = getEmojiSize()
         addPrimitivesToView()
         counterView = addCounterToView()
-        discoveredButton = addDiscoveredButtonToView()
     }
     
     func addPrimitiveContainer(location: CGPoint, size: CGSize) {
@@ -53,23 +52,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func addCounterToView() -> UILabel {
-        var counter = UILabel()
-        counter.text = "0 / 100"
-        counter.frame = CGRectMake(10, 30, 100, 20)
-        self.view.addSubview(counter)
+    func addCounterToView() -> UIBarButtonItem {
+        var counter = UIBarButtonItem()
+        counter.title = "0 / 100"
+        counter.style = .Plain
+        counter.target = self
+        counter.action = "displayVC:"
+        self.navigationItem.rightBarButtonItem = counter
         return counter
     }
     
-    func addDiscoveredButtonToView() -> UIButton {
-        var button = UIButton()
-        button.tintColor = UIColor.grayColor()
-        button.frame = CGRectMake(100, 100, 50, 50)
-        button.backgroundColor = UIColor.grayColor()
-        self.view.addSubview(button)
-        button.addTarget(self, action: "displayVC:", forControlEvents: .TouchUpInside)
-        return button
-    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! EmojisDiscoveredViewController
@@ -78,11 +70,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func displayVC(sender: UIButton!) {
         println("ATTEMPTING TO DISPLAY VC")
-//        emojisDiscoveredViewController = storyboard!.instantiateViewControllerWithIdentifier("emojisDiscoveredIdentifier") as! EmojisDiscoveredViewController
-//        emojisDiscoveredViewController.discovered = Array(emojisDiscovered)
-//        self.presentViewController(emojisDiscoveredViewController, animated: true, completion: nil)
         performSegueWithIdentifier("displayDiscovered", sender: self)
-//        self.presentViewController(discoveredNavigationController, animated: true, completion: nil)
     }
     func dismissVC() {
         emojisDiscoveredViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -106,7 +94,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         let frame : CGRect = CGRectMake(0, 0, emojiSize.width, emojiSize.height)
         var elementView = EmojiElement(frame: frame, emojiName : emojiName, textName : textName!)
-        elementView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         let panRec = UIPanGestureRecognizer()
         panRec.addTarget(self, action: "draggedEmoji:")
         let pinchRec = UIPinchGestureRecognizer()
@@ -139,7 +126,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func animateRejection(e1: EmojiElement, e2: EmojiElement) {
         // andy's algorithm
-        let movementMagnitude = e1.frame.width/2
+        let movementMagnitude = e1.frame.width/4
         let dX = e2.center.x - e1.center.x
         let dY = e2.center.y - e1.center.y
         let h = sqrt(pow(dX, 2)+pow(dY, 2))
@@ -283,7 +270,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             newEmoji.transform = CGAffineTransformMakeScale(2.0, 2.0)
             self.emojisDiscovered.insert(newName)
             var counterString = String(self.emojisDiscovered.count) + " / 100"
-            self.counterView.text = counterString
+//            self.counterView.text = counterString
+            self.counterView.title = counterString
             return newEmoji
         }
         return nil

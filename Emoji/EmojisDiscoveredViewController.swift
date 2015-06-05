@@ -27,7 +27,7 @@ extension EmojisDiscoveredViewController : UICollectionViewDataSource {
     //3
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! EmojiCell
-        cell.backgroundColor = UIColor.grayColor()
+        cell.backgroundColor = UIColor.clearColor()
         cell.emojiName.text = discovered[indexPath.row] as String
         // Configure the cell
         return cell

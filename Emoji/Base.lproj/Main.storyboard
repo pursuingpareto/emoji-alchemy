@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Emoji Alchemy-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Emoji" customModuleProvider="target" sceneMemberID="viewController">
@@ -17,16 +17,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="wwi-HJ-trb"/>
+                    <navigationItem key="navigationItem" title="Emoji Alchemy" id="wwi-HJ-trb"/>
                     <connections>
-                        <segue destination="2WI-Ig-Nzr" kind="push" identifier="displayDiscovered" id="wWE-4W-ix3"/>
+                        <outlet property="navigationItem" destination="wwi-HJ-trb" id="lep-lp-1yI"/>
+                        <segue destination="2WI-Ig-Nzr" kind="show" identifier="displayDiscovered" id="wWE-4W-ix3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1451" y="387"/>
         </scene>
-        <!--Emojis Discovered View Controller-->
+        <!--Emojis Discovered-->
         <scene sceneID="EO3-7n-DEl">
             <objects>
                 <collectionViewController storyboardIdentifier="emojisDiscoveredIdentifier" id="2WI-Ig-Nzr" customClass="EmojisDiscoveredViewController" customModule="Emoji" customModuleProvider="target" sceneMemberID="viewController">
@@ -48,7 +49,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5zw-xh-J8i">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5zw-xh-J8i">
                                             <rect key="frame" x="4" y="14" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -57,6 +58,10 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="5zw-xh-J8i" secondAttribute="centerY" constant="0.5" id="grJ-VK-09j"/>
+                                    <constraint firstAttribute="centerX" secondItem="5zw-xh-J8i" secondAttribute="centerX" id="m2C-QY-eHb"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="emojiName" destination="5zw-xh-J8i" id="VZC-BQ-TP6"/>
                                 </connections>
@@ -67,7 +72,7 @@
                             <outlet property="delegate" destination="2WI-Ig-Nzr" id="KCu-QJ-tRl"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="pyD-j2-qUj"/>
+                    <navigationItem key="navigationItem" title="Emojis Discovered" id="pyD-j2-qUj"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="20Z-gG-oZU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
