@@ -19,9 +19,11 @@ class EmojiElement : UIView {
         self.label = UILabel(frame: labelFrame)
         self.label.text = emojiName as String
         self.label.textAlignment = NSTextAlignment.Center
-        var textLabelFrame = CGRectMake(-0.25 * frame.width, frame.height/2, 1.5 * frame.width, frame.height / 2)
+        
+        var textLabelFrame = CGRectMake(-0.25 * frame.width, frame.height/3, 1.5 * frame.width, frame.height / 2)
         self.textLabel = UILabel(frame: textLabelFrame)
         self.textLabel.text = textName as String
+        self.textLabel.font = UIFont(name: label.font.fontName, size: 12)
         self.textLabel.textAlignment = NSTextAlignment.Center
         
         super.init(frame: frame)
