@@ -11,7 +11,7 @@ import UIKit
 class EmojisDiscoveredViewController: UICollectionViewController {
     let cm = CombinationModel()
     private let reuseIdentifier = "emojiCell"
-    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    private let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
     var discovered = [NSString]()
     var discoveredEmojis = [EmojiElement]()
 }
@@ -34,4 +34,12 @@ extension EmojisDiscoveredViewController : UICollectionViewDataSource {
         return cell
     }
     
+}
+
+extension EmojisDiscoveredViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+            return sectionInsets
+    }
 }
