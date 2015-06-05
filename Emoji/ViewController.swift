@@ -264,13 +264,17 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
                         activeEmojis[e2] = [""]
                         activeEmojis.removeValueForKey(activeView)
                         e1.center = activeView.center
-                        e1.center.x = activeView.center.x - activeView.frame.width / 2
+                        
                         e2.center = activeView.center
-                        e2.center.x = activeView.center.x + activeView.frame.width / 2
+                        
                         e1.transform = CGAffineTransformMakeScale(2.0, 2.0)
                         e2.transform = CGAffineTransformMakeScale(2.0, 2.0)
                         self.view.addSubview(e1)
                         self.view.addSubview(e2)
+                        UIView.animateWithDuration(0.2, animations: {
+                            e1.center.x = activeView.center.x - activeView.frame.width / 2
+                            e2.center.x = activeView.center.x + activeView.frame.width / 2
+                        })
                         activeView.removeFromSuperview()
                     }
                 }
