@@ -65,7 +65,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! EmojisDiscoveredViewController
-        controller.discovered = Array(emojisDiscovered)
+        controller.discovered = Array(self.emojisDiscovered)
+        var emojisDiscovered : [EmojiElement]
+        emojisDiscovered = []
+        for e in controller.discovered {
+            var newElement = createEmojiElement(e)
+            emojisDiscovered.append(newElement)
+        }
+        controller.discoveredEmojis = emojisDiscovered
     }
     
     func displayVC(sender: UIButton!) {

@@ -9,10 +9,11 @@
 import UIKit
 
 class EmojisDiscoveredViewController: UICollectionViewController {
-    
+    let cm = CombinationModel()
     private let reuseIdentifier = "emojiCell"
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     var discovered = [NSString]()
+    var discoveredEmojis = [EmojiElement]()
 }
 
 extension EmojisDiscoveredViewController : UICollectionViewDataSource {
@@ -24,12 +25,13 @@ extension EmojisDiscoveredViewController : UICollectionViewDataSource {
         return discovered.count
     }
     
-    //3
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! EmojiCell
         cell.backgroundColor = UIColor.clearColor()
-        cell.emojiName.text = discovered[indexPath.row] as String
-        // Configure the cell
+        //        cell.emojiName.text = discovered[indexPath.row] as String
+        let e = discoveredEmojis[indexPath.row] as EmojiElement
+        cell.addSubview(e)
         return cell
     }
+    
 }
