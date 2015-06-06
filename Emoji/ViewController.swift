@@ -122,20 +122,26 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         var combinationLabel = UILabel()
         combinationLabel.text = (e1.emojiName as String) + " + " + (e2.emojiName as String) + " = " + (res.emojiName as String)
         combinationLabel.textAlignment = NSTextAlignment.Center
-        combinationLabel.frame = CGRectMake(0, 20, screen.width, emojiSize.height)
+        combinationLabel.frame = CGRectMake(0, 70, screen.width, emojiSize.height)
+        combinationLabel.alpha = 0.0
         let cx = (e1.center.x + e2.center.x) / 2
         let cy = (e1.center.y + e2.center.y) / 2
         let center = CGPointMake(cx, cy)
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseIn, animations: {
+        self.view.addSubview(combinationLabel)
+        UIView.animateWithDuration(0.9, delay: 0.0, options: .CurveEaseIn, animations: {
             e1.center = center
             e2.center = center
             res.center = center
-            self.view.addSubview(combinationLabel)
+            combinationLabel.alpha = 1.0
             }, completion : { finished in
                 e1.removeFromSuperview()
                 e2.removeFromSuperview()
                 self.view.addSubview(res)
-                combinationLabel.removeFromSuperview()
+                UIView.animateWithDuration(2.0, delay: 0.0, options: nil, animations: {
+                    combinationLabel.alpha = 0
+                    }, completion : { finished in
+                        combinationLabel.removeFromSuperview()
+                })
         })
     }
     
