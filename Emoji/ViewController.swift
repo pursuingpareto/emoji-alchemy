@@ -23,7 +23,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     let comboModel = CombinationModel()
     var emojisDiscoveredViewController = EmojisDiscoveredViewController()
     var discoveredNavigationController = UINavigationController()
-    var emojisDiscovered = Set<NSString>()
+    var emojisDiscovered = [NSString]()
     
     var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         counterView = addCounterToView()
         if let previouslyDiscoveredEmoji = NSUserDefaults.standardUserDefaults().objectForKey(self.emojisDiscoveredKey) as? Array<NSString> {
             for emoji in previouslyDiscoveredEmoji {
-                self.emojisDiscovered.insert(emoji)
+                self.emojisDiscovered.append(emoji)
             }
             self.counterView.title = makeCounterTitle()
         }
@@ -73,7 +73,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! EmojisDiscoveredViewController
-        controller.discovered = Array(self.emojisDiscovered)
+        controller.discovered = self.emojisDiscovered
         var emojisDiscovered : [EmojiElement]
         emojisDiscovered = []
         for e in controller.discovered {
@@ -292,9 +292,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         if let newName = comboModel.comboDict[k] {
             let newEmoji = createEmojiElement(newName)
             newEmoji.transform = CGAffineTransformMakeScale(2.0, 2.0)
-            self.emojisDiscovered.insert(newName)
+            if !contains(self.emojisDiscovered, newName) {
+                self.emojisDiscovered.append(newName)
+            }
             // TODO(ih) if saving the whole set is slow, do a more incremental update
-            NSUserDefaults.standardUserDefaults().setObject(Array(self.emojisDiscovered), forKey: self.emojisDiscoveredKey)
+            NSUserDefaults.standardUserDefaults().setObject(self.emojisDiscovered, forKey: self.emojisDiscoveredKey)
             var counterString = String(self.emojisDiscovered.count) + " / 100"
             NSUserDefaults.standardUserDefaults().setInteger(self.emojisDiscovered.count, forKey: self.emojiCountKey)
             self.counterView.title = makeCounterTitle()
