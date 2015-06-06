@@ -63,6 +63,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func addCounterToView() -> UIBarButtonItem {
         var counter = UIBarButtonItem()
         counter.title = makeCounterTitle()
+        let longPressRec = UILongPressGestureRecognizer()
+        longPressRec.addTarget(self, action: "clearDiscovered:")
+        self.view.addGestureRecognizer(longPressRec)
         counter.style = .Plain
         counter.target = self
         counter.action = "displayVC:"
