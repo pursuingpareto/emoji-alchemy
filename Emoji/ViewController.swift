@@ -63,6 +63,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     func addCounterToView() -> UIBarButtonItem {
         var counter = UIBarButtonItem()
         counter.title = "0 / 100"
+        let longPressRec = UILongPressGestureRecognizer()
+        longPressRec.addTarget(self, action: "clearDiscovered:")
+        self.view.addGestureRecognizer(longPressRec)
         counter.style = .Plain
         counter.target = self
         counter.action = "displayVC:"
@@ -70,6 +73,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
         return counter
     }
     
+    // TODO: REMOVE FOR DEPLOYMENT
+    func clearDiscovered(sender: UILongPressGestureRecognizer?){
+        self.emojisDiscovered.removeAll(keepCapacity: false)
+        self.counterView.title = "0 / 100"
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let controller = segue.destinationViewController as! EmojisDiscoveredViewController
