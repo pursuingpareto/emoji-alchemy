@@ -62,7 +62,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func addCounterToView() -> UIBarButtonItem {
         var counter = UIBarButtonItem()
-        counter.title = "0 / 100"
+        counter.title = makeCounterTitle()
         counter.style = .Plain
         counter.target = self
         counter.action = "displayVC:"
@@ -283,7 +283,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func makeCounterTitle() -> String {
-        var counterString = String(self.emojisDiscovered.count) + " / 100"
+        var counterString = String(self.emojisDiscovered.count) + " / " + String(comboModel.accessibleEmoji.count)
         return counterString
     }
    

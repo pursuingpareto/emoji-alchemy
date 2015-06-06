@@ -13,6 +13,13 @@ class CombinationModel {
     
     var comboDict : [NSString : NSString] = [:]
     
+    var accessibleEmoji : Set<NSString> = Set<NSString>()
+    
+    // NOTE(ih) tried to maked isAccessible a closure in setAccessbileEmoji, but had problems making closure recursive
+    var visitedCombo : Set<NSString> = Set<NSString>()
+    
+    let fundamentalEmoji = ["🔥", "💧", "💨", "🌎", "🌀"]
+    
     let emojiToText : [NSString: NSString] = [
         "🔥": "fire",
         "💧": "water",
@@ -75,7 +82,7 @@ class CombinationModel {
         "💡": "thought",
 
     ]
-    
+
     let combinations : [(NSString, NSString, NSString)] = [
         ("🌀", "🌎", "⏳"),
         ("🔥", "💧", "☯"),
@@ -143,6 +150,7 @@ class CombinationModel {
         ("😐", "🎶", "😇"),
         ("😐", "👎", "😥")
     ]
+
     func makeComboDict(combos : [(NSString, NSString, NSString)]) -> [NSString : NSString] {
         println("MAKING COMBO DICT")
         var cDict : [NSString: NSString] = [:]
@@ -158,8 +166,47 @@ class CombinationModel {
         return cDict
     }
     
+    func isAccessible (emoji: NSString) -> Bool {
+        if self.accessibleEmoji.contains(emoji) {
+            return true
+        } else {
+            for (componentEmoji1, componentEmoji2, targetEmoji) in self.combinations {
+                if (targetEmoji == emoji) {
+                    let combo = (componentEmoji1 as String) + (componentEmoji2 as String)
+                    if self.visitedCombo.contains(combo) {
+                        continue
+                    }
+                    self.visitedCombo.insert(combo)
+                    return isAccessible(componentEmoji1) && isAccessible(componentEmoji2)
+                }
+            }
+            return false
+        }
+    }
+
+    
+    func setAccessibleEmoji() -> Set<NSString> {
+        // initialize with the fundamental emoji
+        for emoji in self.fundamentalEmoji {
+            self.accessibleEmoji.insert(emoji)
+        }
+        
+        for (componentEmoji1, componentEmoji2, targetEmoji) in self.combinations {
+            if (self.accessibleEmoji.contains(targetEmoji)) {
+                continue
+            }
+            if (isAccessible(componentEmoji1) && isAccessible(componentEmoji2)) {
+                self.accessibleEmoji.insert(targetEmoji)
+            }
+        }
+
+        return accessibleEmoji
+    }
+    
+    
     init() {
         self.comboDict = makeComboDict(self.combinations)
+        setAccessibleEmoji()
     }
 
 }
