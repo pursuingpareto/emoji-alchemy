@@ -62,7 +62,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func addCounterToView() -> UIBarButtonItem {
         var counter = UIBarButtonItem()
-        counter.title = "0 / 100"
+        counter.title = makeCounterTitle()
         let longPressRec = UILongPressGestureRecognizer()
         longPressRec.addTarget(self, action: "clearDiscovered:")
         self.view.addGestureRecognizer(longPressRec)
@@ -297,7 +297,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func makeCounterTitle() -> String {
-        var counterString = String(self.emojisDiscovered.count) + " / 100"
+        var counterString = String(self.emojisDiscovered.count) + " / " + String(comboModel.accessibleEmoji.count)
         return counterString
     }
    
