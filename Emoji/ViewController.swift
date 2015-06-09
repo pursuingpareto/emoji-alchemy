@@ -48,7 +48,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     
     func addPrimitivesToView(){
         let y_location = screen.height - emojiSize.height - (emojiPaddingFactor * 2 * emojiSize.height)
-        let container_y_location = y_location - emojiPaddingFactor * 2*emojiSize.height
+        let container_y_location = y_location - emojiPaddingFactor * emojiSize.height
         let container_location = CGPoint(x: 0, y: container_y_location)
         let container_size = CGSizeMake(screen.width, screen.height-container_y_location)
         addPrimitiveContainer(container_location, size: container_size)
@@ -76,7 +76,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
     // TODO: REMOVE FOR DEPLOYMENT
     func clearDiscovered(sender: UILongPressGestureRecognizer?){
         self.emojisDiscovered.removeAll(keepCapacity: false)
-        self.counterView.title = "0 / 100"
+        self.counterView.title = makeCounterTitle()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -311,7 +311,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             // TODO(ih) if saving the whole set is slow, do a more incremental update
             NSUserDefaults.standardUserDefaults().setObject(self.emojisDiscovered, forKey: self.emojisDiscoveredKey)
-            var counterString = String(self.emojisDiscovered.count) + " / 100"
+//            var counterString = makeCounterTitle()
             NSUserDefaults.standardUserDefaults().setInteger(self.emojisDiscovered.count, forKey: self.emojiCountKey)
             self.counterView.title = makeCounterTitle()
             return newEmoji
