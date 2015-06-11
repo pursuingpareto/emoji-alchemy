@@ -305,14 +305,11 @@ class CombinationModel {
 //        self.comboDict = makeComboDict(self.combinations)
         self.comboDict = makeComboDict()
         setAccessibleEmoji()
-        print(self.accessibleEmoji)
-        println("")
         for row in self.normal_combos{
             var r_string = ""
             for e in row {
                 r_string += (e as String) + ","
             }
-            println(r_string)
         }
     }
 

@@ -24,12 +24,13 @@ class MapViewController: UICollectionViewController {
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         for l in levelModel.levels {
-            println(l.completed)
+
         }
         let controller = segue.destinationViewController as! LevelViewController
         controller.delegate = self
         controller.level = levelSelected
     }
+    
 }
 
 extension MapViewController: UICollectionViewDataSource {
@@ -42,8 +43,6 @@ extension MapViewController: UICollectionViewDataSource {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("mapCell", forIndexPath: indexPath) as! MapCollectionViewCell
         let level = self.levelModel.levels[indexPath.row]
-        
-        println(level.goal)
         cell.label.text = String(indexPath.row + 1)
         cell.layer.cornerRadius = cell.frame.width / 2.0
         cell.layer.borderWidth = 3
@@ -79,7 +78,6 @@ extension MapViewController: UICollectionViewDelegateFlowLayout {
 extension MapViewController: UICollectionViewDelegate {
     override func collectionView(collectionView: UICollectionView,
         didSelectItemAtIndexPath indexPath: NSIndexPath) {
-            println("selected cell")
             let level = levelModel.levels[indexPath.row]
             if level.isCurrentLevel || level.completed {
                 levelSelected = level
@@ -94,10 +92,8 @@ extension MapViewController: LevelViewControllerDelegate {
         if level.completed && level.isCurrentLevel{
             levelModel.completeCurrentLevel()
         }
+        
         self.collectionView?.reloadData()
-        for l in levelModel.levels {
-            println(l.completed)
-        }
-//        levelViewController.dismissViewControllerAnimated(true, completion: nil)
+         levelViewController.dismissViewControllerAnimated(true, completion: nil)
     }
 }

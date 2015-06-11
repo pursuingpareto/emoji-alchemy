@@ -45,8 +45,6 @@ class LevelModel: NSObject {
                 if (i < levels.count) {
                     levels[i + 1].isCurrentLevel = true
                 }
-                println("LEVEL IS...")
-                println(level)
                 return true
             }
         }
