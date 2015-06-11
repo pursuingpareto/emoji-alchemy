@@ -22,8 +22,20 @@ class Level {
     }
 }
 
-class LevelModel {
+class LevelModel: NSObject {
     let levels : [Level] = [
-        Level(goal: "🌱", movesToComplete: 1),
+        Level(goal: "🌱", movesToComplete: 5),
+        Level(goal: "⚡️", movesToComplete: 3),
+        Level(goal: "😐", movesToComplete: 2),
+        Level(goal: "👤", movesToComplete: 2),
+        Level(goal: "🌱", movesToComplete: 5),
+        Level(goal: "⚡️", movesToComplete: 3),
+        Level(goal: "😐", movesToComplete: 2),
+        Level(goal: "👤", movesToComplete: 2),
     ]
+    override init() {
+        super.init()
+        self.levels[0].isCurrentLevel = true
+    }
+    
 }

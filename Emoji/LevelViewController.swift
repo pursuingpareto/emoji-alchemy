@@ -19,6 +19,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
     var emojiPaddingFactor = CGFloat(0.1) // space to keep around primitives as fraction of emojiSize.width
     var movesRemaining: Int = 0
     var goal : NSString!
+    var level : Level!
     @IBOutlet weak var movesRemainingView: UILabel!
     @IBOutlet weak var targetView: UILabel!
     var activeEmojis : [EmojiElement : [NSString]] = Dictionary<EmojiElement, [NSString]>()
@@ -27,7 +28,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         emojiSize = getEmojiSize()
         addPrimitivesToView()
-        let level : Level = Level(goal: "🌱", movesToComplete: 5)
+//        let level : Level = Level(goal: "🌱", movesToComplete: 5)
         self.goal = level.goal
         movesRemaining = level.movesToComplete
         targetView.text = level.goal as String

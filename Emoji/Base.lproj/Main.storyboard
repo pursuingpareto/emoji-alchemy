@@ -1,32 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="8hl-zW-fpX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H0G-tp-NNq">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Emoji Alchemy-->
-        <scene sceneID="ufC-wZ-h7g">
+        <!--Map View Controller-->
+        <scene sceneID="WLM-4a-8rr">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Emoji" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
-                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Emoji Alchemy" id="wwi-HJ-trb"/>
+                <collectionViewController id="H0G-tp-NNq" customClass="MapViewController" customModule="Emoji" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="CxC-18-1ga">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Vsg-XG-dTz">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="mapCell" id="HkF-7A-6UP" customClass="MapCollectionViewCell" customModule="Emoji" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p04-82-JJu">
+                                            <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="p04-82-JJu" secondAttribute="centerX" id="8SN-lR-JfQ"/>
+                                    <constraint firstAttribute="centerY" secondItem="p04-82-JJu" secondAttribute="centerY" constant="0.5" id="iar-3G-dEo"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="p04-82-JJu"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="8SN-lR-JfQ"/>
+                                        <exclude reference="iar-3G-dEo"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="p04-82-JJu"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="8SN-lR-JfQ"/>
+                                        <include reference="iar-3G-dEo"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="label" destination="p04-82-JJu" id="J4N-z0-aMo"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="H0G-tp-NNq" id="6JQ-Dc-8VW"/>
+                            <outlet property="delegate" destination="H0G-tp-NNq" id="V9c-Zy-4xT"/>
+                        </connections>
+                    </collectionView>
                     <connections>
-                        <outlet property="navigationItem" destination="wwi-HJ-trb" id="lep-lp-1yI"/>
-                        <segue destination="2WI-Ig-Nzr" kind="show" identifier="displayDiscovered" id="wWE-4W-ix3"/>
+                        <segue destination="8hl-zW-fpX" kind="show" identifier="showLevel" id="i9S-FV-ipm"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dwH-X5-anU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1451" y="387"/>
+            <point key="canvasLocation" x="441" y="1159.5"/>
         </scene>
         <!--Level View Controller-->
         <scene sceneID="nq4-Ji-fB3">
@@ -82,7 +130,7 @@
                                             <rect key="frame" x="175" y="8" width="52" height="21"/>
                                         </variation>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attempts" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APW-De-xab">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Combos Left" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APW-De-xab">
                                         <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -136,12 +184,12 @@
                                         <exclude reference="z7g-c8-jsv"/>
                                         <exclude reference="ORD-We-AZd"/>
                                         <exclude reference="ktk-Ke-Bob"/>
+                                        <exclude reference="ENt-Tp-DVY"/>
+                                        <exclude reference="MI2-gS-gJi"/>
                                         <exclude reference="7of-u6-Ra2"/>
                                         <exclude reference="JlE-Vn-ZSl"/>
                                         <exclude reference="TwM-7c-H3B"/>
                                         <exclude reference="eye-62-j8B"/>
-                                        <exclude reference="ENt-Tp-DVY"/>
-                                        <exclude reference="MI2-gS-gJi"/>
                                         <exclude reference="Tmh-MI-aO5"/>
                                         <exclude reference="Zqx-tc-oIE"/>
                                     </mask>
@@ -162,12 +210,12 @@
                                         <include reference="z7g-c8-jsv"/>
                                         <include reference="ORD-We-AZd"/>
                                         <include reference="ktk-Ke-Bob"/>
+                                        <exclude reference="ENt-Tp-DVY"/>
+                                        <include reference="MI2-gS-gJi"/>
                                         <exclude reference="7of-u6-Ra2"/>
                                         <include reference="JlE-Vn-ZSl"/>
                                         <include reference="TwM-7c-H3B"/>
                                         <include reference="eye-62-j8B"/>
-                                        <exclude reference="ENt-Tp-DVY"/>
-                                        <include reference="MI2-gS-gJi"/>
                                         <include reference="Tmh-MI-aO5"/>
                                         <include reference="Zqx-tc-oIE"/>
                                     </mask>
@@ -247,24 +295,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="20Z-gG-oZU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2112" y="387"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="85Y-R1-8Wv">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="egG-7s-UM2" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ycs-Gh-GmL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="yON-9g-Ip0"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wWb-gG-qvK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="631" y="1048"/>
         </scene>
     </scenes>
 </document>
