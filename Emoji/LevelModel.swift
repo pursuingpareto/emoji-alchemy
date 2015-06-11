@@ -37,5 +37,19 @@ class LevelModel: NSObject {
         super.init()
         self.levels[0].isCurrentLevel = true
     }
-    
+    func completeCurrentLevel() -> Bool {
+        for (i, level) in enumerate(levels) {
+            if level.isCurrentLevel {
+                level.completed = true
+                level.isCurrentLevel = false
+                if (i < levels.count) {
+                    levels[i + 1].isCurrentLevel = true
+                }
+                println("LEVEL IS...")
+                println(level)
+                return true
+            }
+        }
+        return false
+    }
 }

@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol LevelViewControllerDelegate {
+    func levelViewControllerShouldResign(levelViewController: LevelViewController)
+}
+
 class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
+    @IBOutlet weak var optionsButton: UIButton!
+    var delegate: LevelViewControllerDelegate?
     let screen : CGRect  = UIScreen.mainScreen().bounds
     let primitiveEmojiNames = ["🔥","💧","🌎","💨","🌀"]
     let emojisDiscoveredKey = "discovered"
@@ -35,7 +41,6 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
         self.view.addSubview(targetView)
         movesRemainingView.text = String(level.movesToComplete)
         self.view.addSubview(movesRemainingView)
-        
     }
     
     func animateCombination(e1 : EmojiElement, e2 : EmojiElement, res : EmojiElement) {
@@ -147,13 +152,8 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
                                 println(res)
                                 if res.emojiName == self.goal {
                                     println("You Win!")
-                                    let winLabel = UILabel()
-                                    winLabel.text = "You Win!!"
-                                    winLabel.font = UIFont(name: winLabel.font.fontName, size: 50)
-                                    winLabel.sizeToFit()
-                                    winLabel.textAlignment = .Center
-                                    self.view.addSubview(winLabel)
-                                    winLabel.center = self.view.center
+                                    self.level.completed = true
+                                    self.delegate?.levelViewControllerShouldResign(self)
                                 }
                                 break
                             }
@@ -172,13 +172,7 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
                 if self.movesRemaining <= 0 {
                     println("You lose!")
-                    let loseLabel = UILabel()
-                    loseLabel.text = "You Lose 😭"
-                    loseLabel.font = UIFont(name: loseLabel.font.fontName, size: 50)
-                    loseLabel.sizeToFit()
-                    loseLabel.textAlignment = .Center
-                    self.view.addSubview(loseLabel)
-                    loseLabel.center = self.view.center
+                    self.delegate?.levelViewControllerShouldResign(self)
                 }
             case .Possible:
                 println("possible")
@@ -231,6 +225,31 @@ class LevelViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
         }
+    }
+    
+    func addEndLevelView() {
+        let endView = UIView(frame: CGRectMake(0, 0, 200, 180))
+        endView.center = self.view.center
+        endView.backgroundColor = UIColor.blueColor()
+        
+        let winOrLoseLabel = UILabel(frame: CGRectMake(0, 0, 200, 40))
+        endView.addSubview(winOrLoseLabel)
+        
+        let winOrLoseLogo = UILabel(frame: CGRectMake(0, 0, 60, 50))
+        winOrLoseLogo.center.x = endView.frame.width / 2
+        winOrLoseLogo.center.y = endView.frame.height / 2
+        endView.addSubview(winOrLoseLogo)
+        
+        let mapButton = UIButton(frame: CGRectMake(0, 0, 100, 50))
+        mapButton.center.x = endView.frame.width / 2
+        mapButton.center.y = endView.frame.height - 55
+        endView.addSubview(mapButton)
+        
+        mapButton.setTitle("Map", forState: .Normal)
+        winOrLoseLogo.text = "👍"
+        winOrLoseLabel.text = "You Win!"
+        
+        self.view.addSubview(endView)
     }
     
     func addPrimitiveContainer(location: CGPoint, size: CGSize) {

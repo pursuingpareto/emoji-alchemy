@@ -23,7 +23,11 @@ class MapViewController: UICollectionViewController {
         return true
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        for l in levelModel.levels {
+            println(l.completed)
+        }
         let controller = segue.destinationViewController as! LevelViewController
+        controller.delegate = self
         controller.level = levelSelected
     }
 }
@@ -47,10 +51,16 @@ extension MapViewController: UICollectionViewDataSource {
         cell.label.font = UIFont(name: cell.label.font.fontName, size: 20)
         if level.completed {
             cell.layer.borderColor = UIColor.greenColor().CGColor
+            cell.label.textColor = UIColor.blackColor()
+            cell.label.text = level.goal as String
         }
-        if !level.isCurrentLevel {
+        else {
             cell.layer.borderColor = UIColor.lightGrayColor().CGColor
-            cell.label.textColor = UIColor.grayColor()
+            cell.label.textColor = UIColor.lightGrayColor()
+        }
+        if level.isCurrentLevel {
+            cell.layer.borderColor = UIColor.blackColor().CGColor
+            cell.label.textColor = UIColor.blackColor()
         }
         return cell
     }
@@ -75,8 +85,19 @@ extension MapViewController: UICollectionViewDelegate {
                 levelSelected = level
                 performSegueWithIdentifier("showLevel", sender: self)
             }
-            else {
-                
-            }
+    }
+}
+
+extension MapViewController: LevelViewControllerDelegate {
+    func levelViewControllerShouldResign(levelViewController: LevelViewController) {
+        let level = levelViewController.level
+        if level.completed && level.isCurrentLevel{
+            levelModel.completeCurrentLevel()
+        }
+        self.collectionView?.reloadData()
+        for l in levelModel.levels {
+            println(l.completed)
+        }
+//        levelViewController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
