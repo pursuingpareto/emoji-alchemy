@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A125F2721B28D65C00BB9095 /* LevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A125F2711B28D65C00BB9095 /* LevelModel.swift */; };
+		A125F2741B28DFC900BB9095 /* LevelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A125F2731B28DFC900BB9095 /* LevelViewController.swift */; };
 		A19A7B1D1ACF98DF0031B5B7 /* CombinationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */; };
 		A1C7536D1B20D7400010F22B /* EmojisDiscoveredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C7536C1B20D7400010F22B /* EmojisDiscoveredViewController.swift */; };
 		A1C753D51B20E88B0010F22B /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C753D41B20E88B0010F22B /* EmojiCell.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A125F2711B28D65C00BB9095 /* LevelModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
+		A125F2731B28DFC900BB9095 /* LevelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelViewController.swift; sourceTree = "<group>"; };
 		A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinationModel.swift; sourceTree = "<group>"; };
 		A1C7536C1B20D7400010F22B /* EmojisDiscoveredViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojisDiscoveredViewController.swift; sourceTree = "<group>"; };
 		A1C753D41B20E88B0010F22B /* EmojiCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
@@ -97,8 +101,10 @@
 				A1C7536C1B20D7400010F22B /* EmojisDiscoveredViewController.swift */,
 				A1C753D41B20E88B0010F22B /* EmojiCell.swift */,
 				A19A7B1C1ACF98DF0031B5B7 /* CombinationModel.swift */,
+				A125F2711B28D65C00BB9095 /* LevelModel.swift */,
 				E8931C021B20E368009C67A6 /* Utility.swift */,
 				A1E5E3471ACF1CD900631EAD /* Main.storyboard */,
+				A125F2731B28DFC900BB9095 /* LevelViewController.swift */,
 				A1C753D81B2222EB0010F22B /* EmojiSection.swift */,
 				A1E5E3631ACF1CF200631EAD /* EmojiElement.swift */,
 				A1E5E34A1ACF1CD900631EAD /* Images.xcassets */,
@@ -233,6 +239,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A125F2741B28DFC900BB9095 /* LevelViewController.swift in Sources */,
+				A125F2721B28D65C00BB9095 /* LevelModel.swift in Sources */,
 				E8931C031B20E368009C67A6 /* Utility.swift in Sources */,
 				A1E5E3461ACF1CD900631EAD /* ViewController.swift in Sources */,
 				A1C753D51B20E88B0010F22B /* EmojiCell.swift in Sources */,
